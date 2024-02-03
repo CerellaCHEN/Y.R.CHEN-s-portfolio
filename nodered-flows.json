@@ -1,0 +1,762 @@
+[
+    {
+        "id": "1301e1145fa6c699",
+        "type": "tab",
+        "label": "version 3-1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "f509c411b341842c",
+        "type": "function",
+        "z": "1301e1145fa6c699",
+        "name": "send scoreOfRed",
+        "func": "var nvpairs = { scoreOfRed:2};\nvar newmsg = {payload: nvpairs}\nreturn newmsg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 290,
+        "y": 120,
+        "wires": [
+            [
+                "c39b9611e963ed1a"
+            ]
+        ]
+    },
+    {
+        "id": "bc49b83d2cd4592a",
+        "type": "inject",
+        "z": "1301e1145fa6c699",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "3",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 80,
+        "y": 120,
+        "wires": [
+            [
+                "1bef092906d3d32f",
+                "f509c411b341842c",
+                "b8820240c4741781"
+            ]
+        ]
+    },
+    {
+        "id": "c39b9611e963ed1a",
+        "type": "http request",
+        "z": "1301e1145fa6c699",
+        "name": "",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "query",
+        "url": "http://192.168.1.6/total_score",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 480,
+        "y": 120,
+        "wires": [
+            [
+                "7e452d9abe7dd532"
+            ]
+        ]
+    },
+    {
+        "id": "1bef092906d3d32f",
+        "type": "function",
+        "z": "1301e1145fa6c699",
+        "name": "send scoreOfGreen",
+        "func": "var nvpairs = { scoreOfGreen: 3};\nvar newmsg = {payload: nvpairs}\nreturn newmsg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 290,
+        "y": 40,
+        "wires": [
+            [
+                "c77612e89fc55b1f"
+            ]
+        ]
+    },
+    {
+        "id": "b8820240c4741781",
+        "type": "function",
+        "z": "1301e1145fa6c699",
+        "name": "send scoreOfBlue",
+        "func": "var nvpairs = { scoreOfBlue:1};\nvar newmsg = {payload: nvpairs}\nreturn newmsg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 290,
+        "y": 200,
+        "wires": [
+            [
+                "ff9f029993bab842"
+            ]
+        ]
+    },
+    {
+        "id": "5289ae00e83f3494",
+        "type": "function",
+        "z": "1301e1145fa6c699",
+        "name": "Sort Total Scores",
+        "func": "if(msg.payload){\n  var totalScore_1 = msg.payload.total_score;\n  var totalScore_2 = msg.payload.total_score1;\n  var totalScore_3 = msg.payload.total_score2; \n\n  var exhibitName_1 = \"Mona Lisa\";\n  var exhibitName_2 = \"The Scream\";\n  var exhibitName_3 = \"The Starry Night\";\n\n  var variables = [\n    { name: exhibitName_1, score: totalScore_1 },\n    { name: exhibitName_2, score: totalScore_2 },\n    { name: exhibitName_3, score: totalScore_3 }\n  ];\n\n  variables.sort((a, b) => b.score - a.score);\n\n  msg.payload = [{\n    \"Ranking\": \"No.1\",\n    \"Exhibit Name\": variables[0].name,\n    \"Scores\": variables[0].score,\n  },\n    {\n      \"Ranking\": \"No.2\",\n      \"Exhibit Name\": variables[1].name,\n      \"Scores\": variables[1].score,\n    },\n    {\n      \"Ranking\": \"No.3\",\n      \"Exhibit Name\": variables[2].name,\n      \"Scores\": variables[2].score,\n    }];\n\n  return msg;\n}\nreturn null;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 830,
+        "y": 120,
+        "wires": [
+            [
+                "6ed3560b93aacce9",
+                "41160b32e08eb00f",
+                "5546d93b1b5b5ff5",
+                "edc11cd98d4eb299",
+                "357ff340a3bd2b97"
+            ]
+        ]
+    },
+    {
+        "id": "c77612e89fc55b1f",
+        "type": "http request",
+        "z": "1301e1145fa6c699",
+        "name": "",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "query",
+        "url": "http://192.168.1.7/total_score",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 480,
+        "y": 40,
+        "wires": [
+            [
+                "7e452d9abe7dd532"
+            ]
+        ]
+    },
+    {
+        "id": "ff9f029993bab842",
+        "type": "http request",
+        "z": "1301e1145fa6c699",
+        "name": "",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "query",
+        "url": "http://192.168.1.5/total_score",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 480,
+        "y": 200,
+        "wires": [
+            [
+                "7e452d9abe7dd532"
+            ]
+        ]
+    },
+    {
+        "id": "6ed3560b93aacce9",
+        "type": "ui_table",
+        "z": "1301e1145fa6c699",
+        "group": "5719bbc0ce554e43",
+        "name": "ranking",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "columns": [],
+        "outputs": 0,
+        "cts": false,
+        "x": 1040,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "41160b32e08eb00f",
+        "type": "switch",
+        "z": "1301e1145fa6c699",
+        "name": "crown up",
+        "property": "payload[0][\"Exhibit Name\"]",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "Mona Lisa",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "The Scream",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "The Starry Night",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 1040,
+        "y": 140,
+        "wires": [
+            [
+                "fdfcbe3d6fbf609c"
+            ],
+            [
+                "a67556f4c9d0a869"
+            ],
+            [
+                "92db6dfef7529273"
+            ]
+        ]
+    },
+    {
+        "id": "5546d93b1b5b5ff5",
+        "type": "switch",
+        "z": "1301e1145fa6c699",
+        "name": "crown down",
+        "property": "payload[1][\"Exhibit Name\"]",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "Mona Lisa",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "The Scream",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "The Starry Night",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 1050,
+        "y": 280,
+        "wires": [
+            [
+                "2ca4adeba145a456"
+            ],
+            [
+                "b9ec283434721143"
+            ],
+            [
+                "120a1ed5706cd1b5"
+            ]
+        ]
+    },
+    {
+        "id": "edc11cd98d4eb299",
+        "type": "switch",
+        "z": "1301e1145fa6c699",
+        "name": "crown down",
+        "property": "payload[2][\"Exhibit Name\"]",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "Mona Lisa",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "The Scream",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "The Starry Night",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 1050,
+        "y": 420,
+        "wires": [
+            [
+                "233c85c6356e7b19"
+            ],
+            [
+                "d8556040545fff76"
+            ],
+            [
+                "4e7cb556e1fc6e0f"
+            ]
+        ]
+    },
+    {
+        "id": "357ff340a3bd2b97",
+        "type": "debug",
+        "z": "1301e1145fa6c699",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1050,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "fdfcbe3d6fbf609c",
+        "type": "http request",
+        "z": "1301e1145fa6c699",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://192.168.1.7/trigger_action",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1200,
+        "y": 100,
+        "wires": [
+            [
+                "218201cc1e84bb7d"
+            ]
+        ]
+    },
+    {
+        "id": "a67556f4c9d0a869",
+        "type": "http request",
+        "z": "1301e1145fa6c699",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://192.168.1.6/trigger_action",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1200,
+        "y": 140,
+        "wires": [
+            [
+                "67a9a93eca805c37"
+            ]
+        ]
+    },
+    {
+        "id": "92db6dfef7529273",
+        "type": "http request",
+        "z": "1301e1145fa6c699",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://192.168.1.5/trigger_action",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1200,
+        "y": 180,
+        "wires": [
+            [
+                "2e629e0bd2841b93"
+            ]
+        ]
+    },
+    {
+        "id": "2ca4adeba145a456",
+        "type": "http request",
+        "z": "1301e1145fa6c699",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://192.168.1.7/reset_action",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1220,
+        "y": 240,
+        "wires": [
+            [
+                "9e5246ed0c7d3271"
+            ]
+        ]
+    },
+    {
+        "id": "b9ec283434721143",
+        "type": "http request",
+        "z": "1301e1145fa6c699",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://192.168.1.6/reset_action",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1220,
+        "y": 280,
+        "wires": [
+            [
+                "ca353a1076433544"
+            ]
+        ]
+    },
+    {
+        "id": "120a1ed5706cd1b5",
+        "type": "http request",
+        "z": "1301e1145fa6c699",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://192.168.1.5/reset_action",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1220,
+        "y": 320,
+        "wires": [
+            [
+                "ea191205e1abf380"
+            ]
+        ]
+    },
+    {
+        "id": "233c85c6356e7b19",
+        "type": "http request",
+        "z": "1301e1145fa6c699",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://192.168.1.7/reset_action",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1220,
+        "y": 380,
+        "wires": [
+            [
+                "17b62ecf4e32fee6"
+            ]
+        ]
+    },
+    {
+        "id": "d8556040545fff76",
+        "type": "http request",
+        "z": "1301e1145fa6c699",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://192.168.1.6/reset_action",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1220,
+        "y": 420,
+        "wires": [
+            [
+                "fefbdd683eba9c43"
+            ]
+        ]
+    },
+    {
+        "id": "4e7cb556e1fc6e0f",
+        "type": "http request",
+        "z": "1301e1145fa6c699",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://192.168.1.5/reset_action",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1220,
+        "y": 460,
+        "wires": [
+            [
+                "4081b03cf8d91a21"
+            ]
+        ]
+    },
+    {
+        "id": "218201cc1e84bb7d",
+        "type": "debug",
+        "z": "1301e1145fa6c699",
+        "name": "debug 1-1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1350,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "67a9a93eca805c37",
+        "type": "debug",
+        "z": "1301e1145fa6c699",
+        "name": "debug 1-2",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1350,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "2e629e0bd2841b93",
+        "type": "debug",
+        "z": "1301e1145fa6c699",
+        "name": "debug 1-3",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1350,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "9e5246ed0c7d3271",
+        "type": "debug",
+        "z": "1301e1145fa6c699",
+        "name": "debug 2-1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1370,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "ca353a1076433544",
+        "type": "debug",
+        "z": "1301e1145fa6c699",
+        "name": "debug 2-2",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1370,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "ea191205e1abf380",
+        "type": "debug",
+        "z": "1301e1145fa6c699",
+        "name": "debug 2-3",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1370,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "17b62ecf4e32fee6",
+        "type": "debug",
+        "z": "1301e1145fa6c699",
+        "name": "debug 3-1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1370,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "fefbdd683eba9c43",
+        "type": "debug",
+        "z": "1301e1145fa6c699",
+        "name": "debug 3-2",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1370,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "4081b03cf8d91a21",
+        "type": "debug",
+        "z": "1301e1145fa6c699",
+        "name": "debug 3-3",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1370,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "7e452d9abe7dd532",
+        "type": "function",
+        "z": "1301e1145fa6c699",
+        "name": "function",
+        "func": "if (msg.payload.total_score)\n    context.set(\"total_score\", msg.payload.total_score)\nif (msg.payload.total_score_1)\n    context.set(\"total_score1\", msg.payload.total_score_1)\nif (msg.payload.total_score_2)\n    context.set(\"total_score2\", msg.payload.total_score_2)\n\nconst result = {\n    total_score: context.get(\"total_score\"),\n    total_score1: context.get(\"total_score1\"),\n    total_score2: context.get(\"total_score2\"),\n}\n\nif (result.total_score != null && result.total_score1 != null && result.total_score2 != null)\n  {  \n    context.set(\"total_score\", null);\n    context.set(\"total_score1\", null);\n    context.set(\"total_score2\", null);\n\n    return { payload: result }\n  }\n\nreturn null",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 120,
+        "wires": [
+            [
+                "5289ae00e83f3494"
+            ]
+        ]
+    },
+    {
+        "id": "5719bbc0ce554e43",
+        "type": "ui_group",
+        "name": "ranking",
+        "tab": "c8d258b.56c2b18",
+        "order": 2,
+        "disp": true,
+        "width": "11",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "c8d258b.56c2b18",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]
